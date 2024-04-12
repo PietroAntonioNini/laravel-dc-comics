@@ -13,7 +13,7 @@ class ComicController extends Controller
     public function index()
     {
         $comics = Comic::all();
-        return view('comics.index', compact('comics'));
+        return view('comics/index', compact('comics'));
 
     }
 
@@ -31,8 +31,21 @@ class ComicController extends Controller
     public function store(Request $request)
     {
 
-        $comic = Comic::create($request->all());
-        return redirect()->route('comics.show', $comic);
+        $newComic = new Comic();
+
+        $newComic->title = $request['title'];
+        $newComic->description = $request['description'];
+        $newComic->thumb = $request['thumb'];
+        $newComic->price = $request['price'];
+        $newComic->series = $request['series'];
+        $newComic->sale_date = $request['sale_date'];
+        $newComic->type = $request['type'];
+        $newComic->artists = json_encode($request['artists']);
+        $newComic->writers = json_encode($request['writers']);
+
+        $newComic->save();
+
+        return redirect()->route('comics.index');
     }   
 
     /**

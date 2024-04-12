@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>Comics</h1>
-    <a href="" class="btn btn-primary">Aggiungi nuovo</a>
+    <a href="{{ route('comics.create') }}" class="btn btn-primary">Aggiungi nuovo</a>
     <div class="mt-3">
         @foreach ($comics as $comic)
             <div class="card mb-3">

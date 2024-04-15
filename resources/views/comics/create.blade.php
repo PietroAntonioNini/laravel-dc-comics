@@ -8,12 +8,12 @@
         @csrf
         <div class="form-group">
             <label for="title">Titolo:</label>
-            <input type="text" class="form-control @error('title') is-invalid  @enderror" id="title" name="title" >
+            <input type="text" class="form-control @error('title') is-invalid  @enderror" id="title" name="title" required>
             @error('title') {{$message}} @enderror
         </div>
         <div class="form-group">
             <label for="description">Descrizione:</label>
-            <textarea class="form-control @error('description') is-invalid  @enderror" id="description" name="description" >{{old('description')}}</textarea>
+            <textarea class="form-control @error('description') is-invalid  @enderror" id="description" name="description" required>{{old('description')}}</textarea>
             @error('description') {{$message}} @enderror
         </div>
         <div class="form-group">
@@ -22,7 +22,7 @@
         </div>
         <div class="form-group">
             <label for="price">Prezzo:</label>
-            <input type="text" class="form-control @error('price') is-invalid  @enderror" id="price" name="price" value="{{old('price')}}" >
+            <input type="text" class="form-control @error('price') is-invalid  @enderror" id="price" name="price" value="{{old('price')}}" required>
             @error('price') {{$message}} @enderror
         </div>
         <div class="form-group">
@@ -31,12 +31,12 @@
         </div>
         <div class="form-group">
             <label for="sale_date">Data di vendita:</label>
-            <input type="date" class="form-control @error('sale_date') is-invalid  @enderror" id="sale_date" name="sale_date" value="{{old('sale_date')}}" >
+            <input type="date" class="form-control @error('sale_date') is-invalid  @enderror" id="sale_date" name="sale_date" value="{{old('sale_date')}}" required>
             @error('sale_date') {{$message}} @enderror
         </div>
         <div class="form-group">
             <label for="type">Tipo:</label>
-            <input type="text" class="form-control @error('type') is-invalid  @enderror" id="type" name="type" value="{{old('type')}}" >
+            <input type="text" class="form-control @error('type') is-invalid  @enderror" id="type" name="type" value="{{old('type')}}" required>
             @error('type') {{$message}} @enderror
         </div>
         <div class="form-group">

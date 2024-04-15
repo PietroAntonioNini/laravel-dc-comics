@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ComicController extends Controller
 {
@@ -33,12 +34,12 @@ class ComicController extends Controller
 
         $request-> validate([
             'title' => 'required|string|unique|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:1000',
             'thumb' => 'nullable|string|max:500',
             'price' => 'required|string',
             'series' => 'required|string',
             'sale_date' => 'required|date',
-            'type' => 'required|string',
+            'type' => 'required|string|max:80',
             'artists' => 'required|array',
             'writers' => 'required|array',
         ]);
@@ -81,6 +82,20 @@ class ComicController extends Controller
      */
     public function update(Request $request, Comic $comic)
     {
+
+        $request-> validate([
+            'title' => 'required|string|unique|max:255',
+            'description' => 'required|string|max:1000',
+            'thumb' => 'nullable|string|max:500',
+            'price' => 'required|string',
+            'series' => 'required|string',
+            'sale_date' => 'required|date',
+            'type' => 'required|string|max:80',
+            'artists' => 'required|array',
+            'writers' => 'required|array',
+        ]);
+
+
         $comic->title = $request['title'];
         $comic->description = $request['description'];
         $comic->thumb = $request['thumb'];
@@ -103,5 +118,22 @@ class ComicController extends Controller
     {
         $comic->delete();
         return redirect()->route('comics.index');
+    }
+
+    private function validation($data){
+        
+        $validator = Validator::make($data,[
+
+            'title' => 'required|string|unique|max:255',
+            'description' => 'required|string|max:1000',
+            'thumb' => 'nullable|string|max:500',
+            'price' => 'required|string',
+            'series' => 'required|string',
+            'sale_date' => 'required|date',
+            'type' => 'required|string|max:80',
+            'artists' => 'required|array',
+            'writers' => 'required|array',
+
+        ])->validate();
     }
 }

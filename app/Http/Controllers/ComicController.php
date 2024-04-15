@@ -32,18 +32,10 @@ class ComicController extends Controller
     public function store(Request $request)
     {
 
-        $request-> validate([
-            'title' => 'required|string|unique|max:255',
-            'description' => 'required|string|max:1000',
-            'thumb' => 'nullable|string|max:500',
-            'price' => 'required|string',
-            'series' => 'required|string',
-            'sale_date' => 'required|date',
-            'type' => 'required|string|max:80',
-            'artists' => 'required|array',
-            'writers' => 'required|array',
-        ]);
+        //funzione che valida la nostra richiesta
+        $this->validation($request->all());
 
+        //crea un nuovo comics
         $newComic = new Comic();
 
         $newComic->title = $request['title'];
@@ -83,19 +75,10 @@ class ComicController extends Controller
     public function update(Request $request, Comic $comic)
     {
 
-        $request-> validate([
-            'title' => 'required|string|unique|max:255',
-            'description' => 'required|string|max:1000',
-            'thumb' => 'nullable|string|max:500',
-            'price' => 'required|string',
-            'series' => 'required|string',
-            'sale_date' => 'required|date',
-            'type' => 'required|string|max:80',
-            'artists' => 'required|array',
-            'writers' => 'required|array',
-        ]);
+        //funzione che valida la nostra richiesta
+        $this->validation($request->all());
 
-
+        //modifica comics esistente 
         $comic->title = $request['title'];
         $comic->description = $request['description'];
         $comic->thumb = $request['thumb'];
@@ -120,19 +103,28 @@ class ComicController extends Controller
         return redirect()->route('comics.index');
     }
 
+
+    //funzione per la validazione dei campi inseriti dall'utente
     private function validation($data){
         
         $validator = Validator::make($data,[
 
             'title' => 'required|string|unique|max:255',
-            'description' => 'required|string|max:1000',
-            'thumb' => 'nullable|string|max:500',
+            'description' => 'required|string|max:5000',
+            'thumb' => 'nullable|string',
             'price' => 'required|string',
-            'series' => 'required|string',
+            'series' => 'nullable|string',
             'sale_date' => 'required|date',
             'type' => 'required|string|max:80',
-            'artists' => 'required|array',
-            'writers' => 'required|array',
+
+        ], [
+            'title.required' => 'Inserisci il Titolo',
+            'description.required' => 'Inserisci una descrizione',
+            'price.required' => 'Inserisci un prezzo',
+            'sale_date.required' => 'Inserisci una data',
+            'type.required' => 'Inserisci il tipo',
+            
+            'max' => 'Il campo :attribute deve avere massimo :max caratteri',
 
         ])->validate();
     }

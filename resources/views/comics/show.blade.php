@@ -15,11 +15,12 @@
     <p><strong>Serie:</strong> {{ $comic->series }}</p>
     <p><strong>Data di vendita:</strong> {{ $comic->sale_date }}</p>
     <p><strong>Tipo:</strong> {{ $comic->type }}</p>
-    <p><strong>Artisti:</strong> {{ implode(', ', json_decode($comic->artists, true)) }}</p>
-    <p><strong>Scrittori:</strong> {{ implode(', ', json_decode($comic->writers, true)) }}</p>
+    <p><strong>Artisti:</strong> {{ implode(', ', json_decode($comic->artists, true) ?? []) }}</p>
+    <p><strong>Scrittori:</strong> {{ implode(', ', json_decode($comic->writers, true) ?? []) }}</p>
+
 
     <!-- Link per tornare alla pagina precedente -->
-    <a href="{{ url()->previous() }}" class="btn btn-primary">Torna Indietro</a>
+    <a href="{{ route('comics.index') }}" class="btn btn-primary">Torna Indietro</a>
     
 </div>
 @endsection

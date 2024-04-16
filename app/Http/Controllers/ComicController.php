@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreComicsRequest;
 use App\Models\Comic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,29 +30,21 @@ class ComicController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreComicsRequest $request)
     {
 
-        //funzione che valida la nostra richiesta
-        $this->validation($request->all());
+        // Validiamo la richiesta e otteniamo i dati validati
+        $validatedData = $request->validated();
 
-        //crea un nuovo comics
+        // Creiamo un nuovo fumetto con i dati validati
         $newComic = new Comic();
-
-        $newComic->title = $request['title'];
-        $newComic->description = $request['description'];
-        $newComic->thumb = $request['thumb'];
-        $newComic->price = $request['price'];
-        $newComic->series = $request['series'];
-        $newComic->sale_date = $request['sale_date'];
-        $newComic->type = $request['type'];
-        $newComic->artists = json_encode($request['artists']);
-        $newComic->writers = json_encode($request['writers']);
-
+        $newComic->fill($validatedData);
+        
         $newComic->save();
 
+        // Reindirizziamo l'utente alla pagina degli indici dei fumetti
         return redirect()->route('comics.index');
-    }   
+    }
 
     /**
      * Display the specified resource.
@@ -72,22 +65,14 @@ class ComicController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comic $comic)
+    public function update(StoreComicsRequest $request, Comic $comic)
     {
 
         //funzione che valida la nostra richiesta
-        $this->validation($request->all());
+        $request->validated();
 
         //modifica comics esistente 
-        $comic->title = $request['title'];
-        $comic->description = $request['description'];
-        $comic->thumb = $request['thumb'];
-        $comic->price = $request['price'];
-        $comic->series = $request['series'];
-        $comic->sale_date = $request['sale_date'];
-        $comic->type = $request['type'];
-        $comic->artists = json_encode($request['artists']);
-        $comic->writers = json_encode($request['writers']);
+        $comic->fill($request->all());
 
         $comic->save();
 
@@ -101,31 +86,5 @@ class ComicController extends Controller
     {
         $comic->delete();
         return redirect()->route('comics.index');
-    }
-
-
-    //funzione per la validazione dei campi inseriti dall'utente
-    private function validation($data){
-        
-        $validator = Validator::make($data,[
-
-            'title' => 'required|string|unique|max:255',
-            'description' => 'required|string|max:5000',
-            'thumb' => 'nullable|string',
-            'price' => 'required|string',
-            'series' => 'nullable|string',
-            'sale_date' => 'required|date',
-            'type' => 'required|string|max:80',
-
-        ], [
-            'title.required' => 'Inserisci il Titolo',
-            'description.required' => 'Inserisci una descrizione',
-            'price.required' => 'Inserisci un prezzo',
-            'sale_date.required' => 'Inserisci una data',
-            'type.required' => 'Inserisci il tipo',
-            
-            'max' => 'Il campo :attribute deve avere massimo :max caratteri',
-
-        ])->validate();
     }
 }

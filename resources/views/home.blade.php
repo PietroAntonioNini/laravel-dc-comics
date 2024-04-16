@@ -2,6 +2,6 @@
 
 @section('content')
 
-@include('index')
+@include('comics.index')
 
 @endsection
